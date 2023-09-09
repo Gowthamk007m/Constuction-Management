@@ -1,0 +1,180 @@
+{% extends 'pages/base.html' %} {% load static %}
+
+<body>
+  <div class="content">
+    {% block content2%}
+
+    <div class="transactions">
+      <div class="title">
+        <h2>Database</h2>
+        <div class="filter">
+          <div class="box" onclick="filtermodal();">
+            <i class="fa fa-filter" aria-hidden="true"></i>
+            <h3>Filter</h3>
+          </div>
+          <a href="{% url 'site_user_create' %}">
+            <div
+            class="box"
+            id="createtransaction"
+            onclick=""
+          >
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <h3>Add</h3>
+          </div>
+          </a>
+        </div>
+      </div>
+      <div class="hr"></div>
+      <div class="sitetoggle">
+        {% for workplace in workplace %}
+        <div id="sitenames" class="sitenames"><h3>{{workplace.name}}</h3></div>
+        {% endfor %}
+      </div>
+      <div class="table">
+        <table style="width: 100%">
+          <tr>
+            <th>ID</th>
+            <th>BUDGET</th>
+            <th>STATUS</th>
+            <th>SITE LOCATION</th>
+            <th>TYPE</th>
+
+            <th>EMPLOYE</th>
+            <th>ROLE</th>
+            <th>NO. OF WORKERS</th>
+          </tr>
+          {% for i in site_details %}
+          <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.site_data.budget}}</td>
+            <td>
+              {%if i.site_data.working_status == "Completed"%}
+
+              <i class="fa fa-check" aria-hidden="true"></i>&nbsp;
+              {{i.site_data.working_status}} {% elif i.site_data.working_status == "Working"%}
+
+              <i class="" aria-hidden="true"></i>&#9203;
+              {{i.site_data.working_status}} {% else %} 
+              <i class="" aria-hidden="true"></i>&#x26A0;
+              {{i.site_data.working_status}}
+              {%endif%}
+            </td>
+            <td>{{i.site_data.location}}</td>
+            <td>{{i.site_data.name}}</td>
+
+            <!-- <td>{{trans_data.trans_user}}</td> -->
+            <!-- <td>{{trans_data.trans_site.name}}</td> -->
+            <td>{{i.name.name}}</td>
+            <td>{{i.site_role}}</td>
+                        <td>{{i.site_data.num_workers}}</td>
+
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+    {% endblock %}
+  </div>
+  {% block content3 %}
+  <div id="filtermodal" class="filtermodal">
+    <div class="modal">
+      <h1>
+        <i class="fa fa-filter" aria-hidden="true"></i>&nbsp;Filter Ledger
+      </h1>
+      <div class="close" onclick="closefiltermodal();">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </div>
+      <h2>Filter by:</h2>
+      <div class="form">
+        <form method="get">
+          <div class="hr"></div>
+          <!-- <div class="input_field">
+            <h3>Submited by</h3>
+            {{myFilter.form.trans_user}}
+          </div> -->
+          <!-- <div class="hr"></div> -->
+          <div class="input_field">
+            <h3>Since</h3>
+            {{myFilter.form.start_date}}
+          </div>
+          <div class="hr"></div>
+          <!-- <div class="input_field">
+            <h3>Construction Site</h3>
+            {{myFilter.form.trans_site}}
+          </div> -->
+          <div class="hr"></div>
+          <div class="input_field">
+            <h3>Status</h3>
+            {{myFilter.form.confirmation_status}}
+          </div>
+          <div class="hr"></div>
+          <div class="submit_field">
+            <input type="submit" value="Filter" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="createtransactionmodal" class="createtransactionmodal">
+    <div class="modal">
+      <h1>
+        <i class="fa fa-thumb-tack" aria-hidden="true"></i>
+        &nbsp;Create Transaction
+      </h1>
+      <div class="close" onclick="closecreatetransactions();">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </div>
+      <div class="form">
+        <form
+          action="/transaction_home/"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %}
+          <div class="hr"></div>
+          <div class="input_field">
+            <h3>Construction Site</h3>
+            {{form.trans_site}}
+
+            <!-- {% for workplace in workplace %}
+        <div id="sitenames" class="sitenames"><h3>{{workplace.name}}</h3></div>
+        {% endfor %} -->
+          </div>
+          <div class="hr"></div>
+          <div class="input_field">
+            <h3>Amount</h3>
+            {{form.amount}}
+          </div>
+          <div class="hr"></div>
+          <div class="input_field">
+            <h3>Transaction Method</h3>
+            {{form.trans_method}}
+          </div>
+          <div class="hr"></div>
+          <div class="input_field">
+            <h3>Comments</h3>
+            {{form.comments}}
+          </div>
+          <div class="hr"></div>
+          <div class="input_field">
+            <h3>Receipt</h3>
+            {{form.image}}
+          </div>
+          <div class="hr"></div>
+          <div class="submit_field_transaction">
+            <input
+              type="button"
+              onclick="closecreatetransactions();"
+              value="Cancel"
+            /><input type="submit" value="Create" />
+          </div>
+        </form>
+
+        <img src="{% static 'images/flower.png' %}" />
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}
+</body>

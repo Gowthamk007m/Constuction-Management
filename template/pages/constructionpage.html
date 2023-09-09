@@ -1,0 +1,49 @@
+{% extends 'pages/base.html' %} {% load static%} {% load humanize %}
+
+<body>
+  <div class="content">
+    {% block content2 %}
+    <div class="construction_detail_container">
+      {% for construction_detail in construction_detail %}
+      <div class="constructiondetailcard">
+        <div class="top">
+          <h3>Last Updated: 3 days ago</h3>
+        </div>
+        <div class="mid">
+          <h4>{{construction_detail.location}}</h4>
+          <h3>{{construction_detail.name}}</h3>
+          <h2>Today Expenditure</h2>
+          <h1>{{construction_detail.expensed|intcomma}}</h1>
+        </div>
+        <div class="bottom">
+          <div class="name">
+            <img src="{{request.user.site_user.image.url}}" />
+            <h2>{{construction_detail.superviser.fullname}}</h2>
+          </div>
+          <div class="more">
+            <a href="{% url 'individualsite' construction_detail.id %}"
+              >More &nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endblock %}
+  </div>
+  {% block content3 %}
+  <div id="xls_modal" class="download_xls">
+    <div class="xls_modal">
+      <a href="{% url 'xls_download' %}" style="text-decoration: none">
+        <h1 onclick="close_xls_modal();">
+          <i class="fa fa-thumb-tack" aria-hidden="true"></i>
+          &nbsp;&nbsp;Download XLS
+        </h1></a
+      >
+      <div class="close" onclick="close_xls_modal();">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+</body>
